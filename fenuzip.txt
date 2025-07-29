@@ -1,0 +1,30 @@
+# Re-run the image generation code since the environment was reset
+
+from PIL import Image, ImageDraw, ImageFont
+import os
+
+# Create a simple placeholder image generator
+def create_placeholder_image(text, filename):
+    img = Image.new('RGB', (400, 400), color=(255, 230, 240))
+    d = ImageDraw.Draw(img)
+    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+    try:
+        font = ImageFont.truetype(font_path, 20)
+    except IOError:
+        font = ImageFont.load_default()
+    textwidth, textheight = d.textsize(text, font=font)
+    d.text(
+        ((400 - textwidth) / 2, (400 - textheight) / 2),
+        text,
+        fill=(100, 0, 50),
+        font=font
+    )
+    img_path = f"/mnt/data/{filename}"
+    img.save(img_path)
+    return img_path
+
+# Create the two placeholder images
+img1_path = create_placeholder_image("Sirop BBL", "sirop-bbl.jpg")
+img2_path = create_placeholder_image("Huile de Fenugrec", "huile-fenugrec.jpg")
+
+img1_path, img2_path
